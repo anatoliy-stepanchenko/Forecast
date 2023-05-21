@@ -1,21 +1,39 @@
 <template>
-  <div class="summary">
+  <div v-if="weatherInfo?.weather" class="summary">
     <div
-      style="
-        background-image: url('./src/assets/img/weather-main/thunderstorm.png');
-      "
+      :style="`
+        background-image: url('./src/assets/img/weather-main/${weatherInfo?.weather[0].description}.png');`"
       class="pic-main"
     ></div>
     <div class="weather">
-      <div class="temp">14 °C</div>
-      <div class="weather-desc text-block">Thunderstorm</div>
+      <div class="temp">{{ Math.round(weatherInfo?.main?.temp) }}</div>
+      <div class="weather-desc text-block">
+        {{ weatherInfo?.weather[0].description }}
+      </div>
     </div>
-    <div class="city text-block">Paris, FR</div>
-    <div class="date text-block">Thu, March 16, 2023</div>
+    <div class="city text-block">
+      {{ weatherInfo?.name }}, {{ weatherInfo?.sys.country }}
+    </div>
+    <div class="date text-block">{{ today }}</div>
   </div>
+  <p v-else>City not found!</p>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  weatherInfo: {
+    type: [Object || null],
+    requared: true,
+  },
+});
+
+const today = new Date().toLocaleString("en-EN", {
+  weekday: "short",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+</script>
 
 <style lang="sass" scoped>
 @import "../assets/styles/main"
@@ -35,6 +53,9 @@
   margin: 0 0 20px
   padding: 20px 0
   border-bottom: 1px solid rgba(255, 255, 255, 0.4)
+
+.weather-desc::first-letter
+  text-transform: uppercase
 
 .temp
   padding-bottom: 8px
