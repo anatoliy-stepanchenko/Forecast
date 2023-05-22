@@ -1,12 +1,12 @@
 <template>
-  <div v-if="weatherInfo?.weather" class="summary">
+  <div class="summary">
     <div
       :style="`
         background-image: url('./src/assets/img/weather-main/${weatherInfo?.weather[0].description}.png');`"
       class="pic-main"
     ></div>
     <div class="weather">
-      <div class="temp">{{ Math.round(weatherInfo?.main?.temp) }}</div>
+      <div class="temp">{{ Math.round(weatherInfo?.main?.temp) }} °C</div>
       <div class="weather-desc text-block">
         {{ weatherInfo?.weather[0].description }}
       </div>
@@ -16,14 +16,13 @@
     </div>
     <div class="date text-block">{{ today }}</div>
   </div>
-  <p v-else>City not found!</p>
 </template>
 
 <script setup>
 const props = defineProps({
   weatherInfo: {
     type: [Object || null],
-    requared: true,
+    required: true,
   },
 });
 
